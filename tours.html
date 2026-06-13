@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cimas & Senderos - Tours de Aventura en Colombia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0a2e1a;
+  --secondary: #1a4d3a;
+  --accent: #d4a853;
+  --sky: #1e3d6b;
+  --light: #f2ede3;
+  --dark: #080e0b;
+  --easy: #2ecc71;
+  --moderate: #f39c12;
+  --hard: #e74c3c;
+  --expert: #8e44ad;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--light);overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(8,14,11,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(212,168,83,0.15);transition:all .3s}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--accent);letter-spacing:.05em;text-decoration:none}
+.nav-logo span{color:var(--light)}
+.nav-links{display:flex;align-items:center;gap:1.5rem;list-style:none}
+.nav-links a{color:var(--light);text-decoration:none;font-size:.9rem;font-weight:400;opacity:.85;transition:opacity .2s,color .2s}
+.nav-links a:hover{opacity:1;color:var(--accent)}
+.lang-btn{background:transparent;border:1.5px solid var(--accent);color:var(--accent);padding:.3rem .8rem;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;transition:all .2s}
+.lang-btn:hover{background:var(--accent);color:var(--dark)}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--light);transition:all .3s}
+
+/* HERO */
+#hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:#050c08}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-content{position:relative;z-index:2;max-width:800px;padding:2rem}
+.hero-eyebrow{font-size:.85rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;opacity:.9}
+.hero-title{font-size:clamp(3rem,8vw,6rem);font-weight:700;line-height:1.05;color:var(--light);margin-bottom:1.2rem;text-shadow:0 2px 40px rgba(0,0,0,.8)}
+.hero-title em{color:var(--accent);font-style:italic}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.25rem);font-weight:300;color:rgba(242,237,227,.75);margin-bottom:2.5rem;line-height:1.6}
+.cta-btn{display:inline-block;background:var(--accent);color:var(--dark);padding:.9rem 2.5rem;border-radius:40px;font-weight:600;font-size:1rem;text-decoration:none;transition:all .3s;box-shadow:0 4px 30px rgba(212,168,83,.3)}
+.cta-btn:hover{background:#e8bc68;transform:translateY(-2px);box-shadow:0 8px 40px rgba(212,168,83,.4)}
+
+/* FILTERS */
+#filters{position:static;background:rgba(8,14,11,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(212,168,83,.12);padding:1rem 2rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;justify-content:center}
+.filter-group{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.filter-label{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(242,237,227,.5);margin-right:.25rem}
+.filter-btn{background:transparent;border:1px solid rgba(242,237,227,.2);color:rgba(242,237,227,.7);padding:.3rem .85rem;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(212,168,83,.08)}
+.filter-btn[data-diff="easy"].active{border-color:var(--easy);color:var(--easy);background:rgba(46,204,113,.08)}
+.filter-btn[data-diff="moderate"].active{border-color:var(--moderate);color:var(--moderate);background:rgba(243,156,18,.08)}
+.filter-btn[data-diff="hard"].active{border-color:var(--hard);color:var(--hard);background:rgba(231,76,60,.08)}
+.filter-btn[data-diff="expert"].active{border-color:var(--expert);color:var(--expert);background:rgba(142,68,173,.08)}
+.filter-sep{width:1px;height:28px;background:rgba(242,237,227,.1)}
+
+/* SECTIONS */
+.section{position:relative;padding:5rem 2rem;overflow:hidden}
+.section-header{text-align:center;margin-bottom:3.5rem;position:relative;z-index:2}
+.section-tag{display:inline-block;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem}
+.section-title{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:600;color:var(--light);margin-bottom:.75rem}
+.section-desc{font-size:1rem;color:rgba(242,237,227,.65);max-width:550px;margin:0 auto;line-height:1.7}
+
+/* MOUNTAIN SECTION */
+#montana{background:linear-gradient(160deg,#0d1f13 0%,#0a1a2a 50%,#07111a 100%)}
+.snowflake-container{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+.snowflake{position:absolute;top:-20px;color:#cce8ff;animation:snowfall linear infinite;opacity:0;pointer-events:none;user-select:none}
+@keyframes snowfall{
+  0%{transform:translateY(-20px) rotate(0deg);opacity:0}
+  10%{opacity:.8}
+  90%{opacity:.6}
+  100%{transform:translateY(110vh) rotate(360deg);opacity:0}
+}
+
+/* TRAILS SECTION */
+#senderos{background:linear-gradient(160deg,#071a0e 0%,#0f2e18 60%,#0a2010 100%)}
+.leaf-container{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+.leaf{position:absolute;top:-30px;animation:leaffall linear infinite;opacity:0;pointer-events:none;user-select:none}
+@keyframes leaffall{
+  0%{transform:translateY(-30px) rotate(0deg) translateX(0);opacity:0}
+  10%{opacity:.9}
+  50%{transform:translateY(50vh) rotate(180deg) translateX(40px)}
+  90%{opacity:.7}
+  100%{transform:translateY(110vh) rotate(360deg) translateX(-20px);opacity:0}
+}
+
+/* HIKES SECTION */
+#caminatas{background:linear-gradient(160deg,#050d1a 0%,#0b1829 60%,#060f1a 100%)}
+.firefly-container{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+.firefly{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(212,168,83,.9);box-shadow:0 0 6px 2px rgba(212,168,83,.5);animation:fireflyAnim ease-in-out infinite;pointer-events:none}
+@keyframes fireflyAnim{
+  0%,100%{opacity:0;transform:translate(0,0)}
+  20%{opacity:1}
+  50%{opacity:.7;transform:translate(var(--dx),var(--dy))}
+  80%{opacity:.9}
+}
+
+/* TOUR CARDS GRID */
+.tours-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;position:relative;z-index:2}
+.tour-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;transition:transform .3s,box-shadow .3s,opacity .3s;position:relative}
+.tour-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.tour-card.hidden{display:none}
+.tour-card.fade-in-card{opacity:0;transform:translateY(30px)}
+.tour-card.visible{opacity:1;transform:translateY(0);transition:opacity .5s,transform .5s}
+.card-img-wrap{position:relative;height:200px;overflow:hidden}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.tour-card:hover .card-img-wrap img{transform:scale(1.07)}
+.card-badge{position:absolute;top:.75rem;left:.75rem;padding:.25rem .7rem;border-radius:20px;font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#fff}
+.badge-easy{background:var(--easy)}
+.badge-moderate{background:var(--moderate)}
+.badge-hard{background:var(--hard)}
+.badge-expert{background:var(--expert)}
+.card-info-btn{position:absolute;top:.75rem;right:.75rem;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.55);border:1.5px solid rgba(255,255,255,.3);color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.card-info-btn:hover{background:var(--accent);border-color:var(--accent);color:var(--dark)}
+.card-body{padding:1.1rem}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--light);margin-bottom:.6rem;line-height:1.3}
+.card-meta{display:flex;gap:.8rem;margin-bottom:.7rem;flex-wrap:wrap}
+.card-meta span{display:flex;align-items:center;gap:.3rem;font-size:.78rem;color:rgba(242,237,227,.6)}
+.card-desc{font-size:.82rem;color:rgba(242,237,227,.55);line-height:1.55;margin-bottom:1rem}
+.card-actions{display:flex;gap:.6rem}
+.wa-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:.4rem;background:#25D366;color:#fff;padding:.55rem;border-radius:8px;text-decoration:none;font-size:.82rem;font-weight:600;transition:background .2s}
+.wa-btn:hover{background:#1ebe5a}
+.wa-btn svg{width:16px;height:16px;fill:#fff;flex-shrink:0}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:#0f2518;border:1px solid rgba(212,168,83,.25);border-radius:16px;padding:2rem;max-width:400px;width:90%;position:relative;transform:translateY(20px);transition:transform .25s}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-close{position:absolute;top:.75rem;right:.75rem;background:none;border:none;color:rgba(242,237,227,.6);cursor:pointer;font-size:1.3rem;line-height:1;transition:color .2s}
+.modal-close:hover{color:var(--accent)}
+.modal-diff-badge{display:inline-block;padding:.3rem .9rem;border-radius:20px;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-bottom:1rem;color:#fff}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--light);margin-bottom:.75rem}
+.modal-body{font-size:.88rem;color:rgba(242,237,227,.75);line-height:1.65}
+.modal-body ul{margin-top:.6rem;padding-left:1.2rem;display:flex;flex-direction:column;gap:.35rem}
+
+/* ACHIEVEMENTS */
+#logros{background:linear-gradient(170deg,#07110a 0%,#0a1e14 100%);padding:5rem 2rem}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-bottom:4rem}
+.stat-card{text-align:center;padding:2rem 1rem;background:rgba(255,255,255,.03);border:1px solid rgba(212,168,83,.12);border-radius:16px}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:700;color:var(--accent);line-height:1}
+.stat-label{font-size:.85rem;color:rgba(242,237,227,.6);margin-top:.4rem;letter-spacing:.05em}
+
+/* TIMELINE */
+.timeline{position:relative;max-width:760px;margin:0 auto 4rem;padding:2rem 0}
+.timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--accent) 15%,var(--accent) 85%,transparent);transform:translateX(-50%)}
+.tl-item{display:flex;gap:1.5rem;margin-bottom:2rem;align-items:center}
+.tl-item:nth-child(odd){flex-direction:row-reverse;text-align:right}
+.tl-item:nth-child(odd) .tl-icon-wrap{flex-direction:row-reverse}
+.tl-content{flex:1;padding:1rem 1.25rem 1rem 1rem;background:linear-gradient(135deg,rgba(212,168,83,.07),rgba(255,255,255,.03));border:1px solid rgba(212,168,83,.18);border-radius:14px;transition:transform .2s,box-shadow .2s;cursor:default}
+.tl-content:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(212,168,83,.12)}
+.tl-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem}
+.tl-item:nth-child(odd) .tl-header{flex-direction:row-reverse}
+.tl-emoji{font-size:1.2rem}
+.tl-year{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;color:var(--accent)}
+.tl-text{font-size:.84rem;color:rgba(242,237,227,.72);line-height:1.55}
+.tl-dot{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,#f0c857,var(--accent));border:3px solid var(--dark);box-shadow:0 0 0 3px rgba(212,168,83,.35),0 0 14px rgba(212,168,83,.25)}
+
+/* CERTIFICATIONS */
+.certs-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.cert-card{background:rgba(212,168,83,.06);border:1px solid rgba(212,168,83,.15);border-radius:12px;padding:1.25rem;text-align:center}
+.cert-icon{font-size:2rem;margin-bottom:.5rem}
+.cert-name{font-size:.82rem;font-weight:600;color:var(--accent)}
+.cert-org{font-size:.75rem;color:rgba(242,237,227,.5);margin-top:.2rem}
+
+/* FOOTER */
+footer{background:#030807;border-top:1px solid rgba(212,168,83,.1);padding:3rem 2rem 1.5rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:2rem}
+.footer-brand p{font-size:.85rem;color:rgba(242,237,227,.5);line-height:1.7;margin-top:.75rem;max-width:280px}
+.footer-col h4{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--accent);margin-bottom:.75rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+.footer-col ul a{font-size:.85rem;color:rgba(242,237,227,.55);text-decoration:none;transition:color .2s}
+.footer-col ul a:hover{color:var(--accent)}
+.footer-wa{display:inline-flex;align-items:center;gap:.5rem;margin-top:1rem;background:#25D366;color:#fff;padding:.5rem 1.1rem;border-radius:24px;text-decoration:none;font-size:.85rem;font-weight:600;transition:background .2s}
+.footer-wa:hover{background:#1ebe5a}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+.footer-bottom p{font-size:.78rem;color:rgba(242,237,227,.35)}
+
+/* ANIMATIONS */
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.tours-grid{grid-template-columns:repeat(2,1fr)}.stats-row{grid-template-columns:repeat(2,1fr)}.certs-row{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){
+  .nav-links{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(8,14,11,.98);flex-direction:column;padding:1.5rem;gap:1rem;border-bottom:1px solid rgba(212,168,83,.1)}
+  .nav-links.open{display:flex}
+  .hamburger{display:flex}
+  .nav-links li:has(.lang-btn){display:none}
+  .tours-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .certs-row{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr}
+  .timeline::before{left:20px;width:2px}
+  .tl-item,.tl-item:nth-child(odd){flex-direction:row;text-align:left;gap:1rem}
+  .tl-item:nth-child(odd) .tl-header{flex-direction:row}
+  .tl-item:nth-child(odd) .tl-icon-wrap{flex-direction:row}
+  .tl-dot{margin-left:-9px;flex-shrink:0}
+  .tl-item:nth-child(odd) .tl-placeholder{display:none}
+  .tl-content{background:linear-gradient(135deg,rgba(212,168,83,.09),rgba(255,255,255,.04));border-left:3px solid rgba(212,168,83,.4);border-radius:0 14px 14px 0}
+  #filters{flex-direction:column;gap:.6rem}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#hero" class="nav-logo">Cimas <span>&amp; Senderos</span></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#montana" data-es="Montaña" data-en="Mountain">Montaña</a></li>
+    <li><a href="#senderos" data-es="Senderos" data-en="Trails">Senderos</a></li>
+    <li><a href="#caminatas" data-es="Caminatas" data-en="Hikes">Caminatas</a></li>
+    <li><a href="#logros" data-es="Nosotros" data-en="About Us">Nosotros</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-btn" id="lang-btn">English</button>
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <p class="hero-eyebrow" data-es="Colombia · Aventura · Naturaleza" data-en="Colombia · Adventure · Nature">Colombia · Aventura · Naturaleza</p>
+    <h1 class="hero-title"><span data-es="Cimas &amp; " data-en="Peaks &amp; ">Cimas &amp; </span><em data-es="Senderos" data-en="Trails">Senderos</em></h1>
+    <p class="hero-sub" data-es="Explora las montañas más imponentes y los paisajes más vírgenes de Colombia con guías certificados y rutas diseñadas para cada nivel de aventurero." data-en="Explore Colombia's most imposing mountains and pristine landscapes with certified guides and routes designed for every level of adventurer.">Explora las montañas más imponentes y los paisajes más vírgenes de Colombia con guías certificados y rutas diseñadas para cada nivel de aventurero.</p>
+    <a href="#montana" class="cta-btn" data-es="Descubrir Tours" data-en="Discover Tours">Descubrir Tours</a>
+  </div>
+</section>
+
+<!-- FILTERS -->
+<div id="filters">
+  <span class="filter-label" data-es="Dificultad:" data-en="Difficulty:">Dificultad:</span>
+  <div class="filter-group">
+    <button class="filter-btn active" data-diff="all" data-es="Todos" data-en="All">Todos</button>
+    <button class="filter-btn" data-diff="easy" data-es="Fácil" data-en="Easy">Fácil</button>
+    <button class="filter-btn" data-diff="moderate" data-es="Moderada" data-en="Moderate">Moderada</button>
+    <button class="filter-btn" data-diff="hard" data-es="Difícil" data-en="Hard">Difícil</button>
+    <button class="filter-btn" data-diff="expert" data-es="Experto" data-en="Expert">Experto</button>
+  </div>
+  <div class="filter-sep"></div>
+  <span class="filter-label" data-es="Duración:" data-en="Duration:">Duración:</span>
+  <div class="filter-group">
+    <button class="filter-btn active" data-dur="all" data-es="Todos" data-en="All">Todos</button>
+    <button class="filter-btn" data-dur="1day" data-es="1 Día" data-en="1 Day">1 Día</button>
+    <button class="filter-btn" data-dur="2days" data-es="2 Días" data-en="2 Days">2 Días</button>
+    <button class="filter-btn" data-dur="3plus" data-es="3+ Días" data-en="3+ Days">3+ Días</button>
+  </div>
+  <div class="filter-sep"></div>
+  <span class="filter-label" data-es="Categoría:" data-en="Category:">Categoría:</span>
+  <div class="filter-group">
+    <button class="filter-btn active" data-cat="all" data-es="Todos" data-en="All">Todos</button>
+    <button class="filter-btn" data-cat="montana" data-es="Montaña" data-en="Mountain">Montaña</button>
+    <button class="filter-btn" data-cat="senderos" data-es="Senderos" data-en="Trails">Senderos</button>
+    <button class="filter-btn" data-cat="caminatas" data-es="Caminatas" data-en="Hikes">Caminatas</button>
+  </div>
+</div>
+
+<!-- MOUNTAIN SECTION -->
+<section class="section" id="montana">
+  <div class="snowflake-container" id="snow-container"></div>
+  <div class="section-header fade-in">
+    <span class="section-tag" data-es="Alta Montaña" data-en="High Mountain">Alta Montaña</span>
+    <h2 class="section-title" data-es="Tours de Montaña" data-en="Mountain Tours">Tours de Montaña</h2>
+    <p class="section-desc" data-es="Conquista los nevados y páramos de los Andes colombianos. Experiencias únicas en alturas que tocan las nubes." data-en="Conquer the snowfields and highlands of the Colombian Andes. Unique experiences at heights that touch the clouds.">Conquista los nevados y páramos de los Andes colombianos. Experiencias únicas en alturas que tocan las nubes.</p>
+  </div>
+  <div class="tours-grid">
+
+    <div class="tour-card fade-in-card" data-category="montana" data-difficulty="hard" data-duration="2days">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80" alt="Nevado del Ruiz" loading="lazy">
+        <span class="card-badge badge-hard" data-es="Difícil" data-en="Hard">Difícil</span>
+        <button class="card-info-btn" data-diff-key="hard" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Nevado del Ruiz – Cráter del Arenas" data-en="Nevado del Ruiz – Arenas Crater">Nevado del Ruiz – Cráter del Arenas</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="2 días" data-en="2 days">2 días</span></span>
+          <span>📍 Caldas</span>
+        </div>
+        <p class="card-desc" data-es="Ascenso al volcán activo más alto de Colombia, con vista al cráter y glaciares eternos. Salida desde Manizales." data-en="Ascent to Colombia's highest active volcano, with views of the crater and eternal glaciers. Departure from Manizales.">Ascenso al volcán activo más alto de Colombia, con vista al cráter y glaciares eternos. Salida desde Manizales.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Nevado%20del%20Ruiz%20-%20Crater%20del%20Arenas" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tour-card fade-in-card" data-category="montana" data-difficulty="expert" data-duration="3plus">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Nevado de Santa Isabel" loading="lazy">
+        <span class="card-badge badge-expert" data-es="Muy Difícil" data-en="Very Hard">Muy Difícil</span>
+        <button class="card-info-btn" data-diff-key="expert" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Nevado de Santa Isabel" data-en="Santa Isabel Snowfield">Nevado de Santa Isabel</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="3 días" data-en="3 days">3 días</span></span>
+          <span>📍 Risaralda</span>
+        </div>
+        <p class="card-desc" data-es="El único nevado que puede ascenderse sin equipo técnico avanzado, aunque requiere excelente condición física y aclimatación." data-en="The only snowfield that can be climbed without advanced technical equipment, though excellent fitness and acclimatization are required.">El único nevado que puede ascenderse sin equipo técnico avanzado, aunque requiere excelente condición física y aclimatación.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Nevado%20de%20Santa%20Isabel" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tour-card fade-in-card" data-category="montana" data-difficulty="expert" data-duration="3plus">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1519583272095-6433daf26b6e?w=600&q=80" alt="Nevado del Tolima" loading="lazy">
+        <span class="card-badge badge-expert" data-es="Experto" data-en="Expert">Experto</span>
+        <button class="card-info-btn" data-diff-key="expert" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Nevado del Tolima – La Gran Cumbre" data-en="Nevado del Tolima – The Great Summit">Nevado del Tolima – La Gran Cumbre</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="4 días" data-en="4 days">4 días</span></span>
+          <span>📍 Tolima</span>
+        </div>
+        <p class="card-desc" data-es="La cima más técnica del Eje Cafetero. Requiere crampones, piolet y experiencia previa en glaciares. Vista 360° incomparable." data-en="The most technical summit of the Coffee Region. Requires crampons, ice axe and prior glacier experience. Unmatched 360° views.">La cima más técnica del Eje Cafetero. Requiere crampones, piolet y experiencia previa en glaciares. Vista 360° incomparable.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Nevado%20del%20Tolima%20-%20La%20Gran%20Cumbre" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tour-card fade-in-card" data-category="montana" data-difficulty="moderate" data-duration="1day">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=600&q=80" alt="Páramo de Belmira" loading="lazy">
+        <span class="card-badge badge-moderate" data-es="Moderada" data-en="Moderate">Moderada</span>
+        <button class="card-info-btn" data-diff-key="moderate" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Páramo de Belmira" data-en="Belmira Páramo">Páramo de Belmira</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="1 día" data-en="1 day">1 día</span></span>
+          <span>📍 Antioquia</span>
+        </div>
+        <p class="card-desc" data-es="Caminata por frailejones y lagunas de alta montaña. Ecosistema único de páramo a 3.200 msnm, 2 horas de Medellín." data-en="Hike through frailejones and high-mountain lagoons. Unique páramo ecosystem at 3,200 masl, 2 hours from Medellín.">Caminata por frailejones y lagunas de alta montaña. Ecosistema único de páramo a 3.200 msnm, 2 horas de Medellín.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Paramo%20de%20Belmira" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TRAILS SECTION -->
+<section class="section" id="senderos">
+  <div class="leaf-container" id="leaf-container"></div>
+  <div class="section-header fade-in">
+    <span class="section-tag" data-es="Naturaleza Viva" data-en="Living Nature">Naturaleza Viva</span>
+    <h2 class="section-title" data-es="Senderos Naturales" data-en="Nature Trails">Senderos Naturales</h2>
+    <p class="section-desc" data-es="Rutas entre selvas, cañones y valles de palmas de cera. Biodiversidad colombiana en estado puro." data-en="Routes through jungles, canyons and wax palm valleys. Colombian biodiversity in its purest form.">Rutas entre selvas, cañones y valles de palmas de cera. Biodiversidad colombiana en estado puro.</p>
+  </div>
+  <div class="tours-grid">
+
+    <div class="tour-card fade-in-card" data-category="senderos" data-difficulty="easy" data-duration="1day">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80" alt="Valle del Cocora" loading="lazy">
+        <span class="card-badge badge-easy" data-es="Fácil" data-en="Easy">Fácil</span>
+        <button class="card-info-btn" data-diff-key="easy" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Valle del Cocora – Palmas de Cera" data-en="Cocora Valley – Wax Palms">Valle del Cocora – Palmas de Cera</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="1 día" data-en="1 day">1 día</span></span>
+          <span>📍 Salento</span>
+        </div>
+        <p class="card-desc" data-es="Icónico sendero entre las palmas de cera más altas del mundo, árbol nacional de Colombia. Paisaje de ensueño." data-en="Iconic trail among the world's tallest wax palms, Colombia's national tree. A dreamlike landscape.">Icónico sendero entre las palmas de cera más altas del mundo, árbol nacional de Colombia. Paisaje de ensueño.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Valle%20del%20Cocora%20-%20Palmas%20de%20Cera" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tour-card fade-in-card" data-category="senderos" data-difficulty="moderate" data-duration="2days">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80" alt="Ruta del Cóndor" loading="lazy">
+        <span class="card-badge badge-moderate" data-es="Moderada" data-en="Moderate">Moderada</span>
+        <button class="card-info-btn" data-diff-key="moderate" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Ruta del Cóndor" data-en="Condor Route">Ruta del Cóndor</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="2 días" data-en="2 days">2 días</span></span>
+          <span>📍 Risaralda</span>
+        </div>
+        <p class="card-desc" data-es="Sendero que recorre los bosques andinos con avistamiento de cóndores. Campamento en el corazón de la selva." data-en="Trail through Andean forests with condor sightings. Camp in the heart of the jungle.">Sendero que recorre los bosques andinos con avistamiento de cóndores. Campamento en el corazón de la selva.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Ruta%20del%20Condor" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tour-card fade-in-card" data-category="senderos" data-difficulty="moderate" data-duration="1day">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80" alt="Cañón del Río Claro" loading="lazy">
+        <span class="card-badge badge-moderate" data-es="Moderada" data-en="Moderate">Moderada</span>
+        <button class="card-info-btn" data-diff-key="moderate" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Cañón del Río Claro" data-en="Río Claro Canyon">Cañón del Río Claro</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="1 día" data-en="1 day">1 día</span></span>
+          <span>📍 Antioquia</span>
+        </div>
+        <p class="card-desc" data-es="Impresionante cañón de mármol blanco tallado por aguas turquesas. Opciones de snorkel, rappel y espeleología." data-en="Impressive white marble canyon carved by turquoise waters. Options for snorkeling, rappelling, and caving.">Impresionante cañón de mármol blanco tallado por aguas turquesas. Opciones de snorkel, rappel y espeleología.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Canon%20del%20Rio%20Claro" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tour-card fade-in-card" data-category="senderos" data-difficulty="hard" data-duration="3plus">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80" alt="Camino Nacional del Quindío" loading="lazy">
+        <span class="card-badge badge-hard" data-es="Difícil" data-en="Hard">Difícil</span>
+        <button class="card-info-btn" data-diff-key="hard" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Camino Nacional del Quindío" data-en="Quindío National Trail">Camino Nacional del Quindío</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="3 días" data-en="3 days">3 días</span></span>
+          <span>📍 Quindío</span>
+        </div>
+        <p class="card-desc" data-es="Antiguo camino precolombino entre Ibagué y Armenia. Cruce de la Cordillera Central con historia y flora exuberante." data-en="Ancient pre-Columbian path between Ibagué and Armenia. Crossing the Central Andes with history and lush flora.">Antiguo camino precolombino entre Ibagué y Armenia. Cruce de la Cordillera Central con historia y flora exuberante.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Camino%20Nacional%20del%20Quindio" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HIKES SECTION -->
+<section class="section" id="caminatas">
+  <div class="firefly-container" id="firefly-container"></div>
+  <div class="section-header fade-in">
+    <span class="section-tag" data-es="Rutas Escénicas" data-en="Scenic Routes">Rutas Escénicas</span>
+    <h2 class="section-title" data-es="Caminatas y Paisajes" data-en="Hikes &amp; Landscapes">Caminatas y Paisajes</h2>
+    <p class="section-desc" data-es="Lagunas termales, cascadas y miradores. Aventuras de un día para descubrir lo mejor de la naturaleza colombiana." data-en="Thermal lagoons, waterfalls and viewpoints. Day adventures to discover the best of Colombian nature.">Lagunas termales, cascadas y miradores. Aventuras de un día para descubrir lo mejor de la naturaleza colombiana.</p>
+  </div>
+  <div class="tours-grid">
+
+    <div class="tour-card fade-in-card" data-category="caminatas" data-difficulty="moderate" data-duration="1day">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=600&q=80" alt="Laguna de Otún" loading="lazy">
+        <span class="card-badge badge-moderate" data-es="Moderada" data-en="Moderate">Moderada</span>
+        <button class="card-info-btn" data-diff-key="moderate" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Laguna de Otún" data-en="Otún Lagoon">Laguna de Otún</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="1 día" data-en="1 day">1 día</span></span>
+          <span>📍 Pereira</span>
+        </div>
+        <p class="card-desc" data-es="Laguna glaciar de aguas esmeralda en el Parque Los Nevados. Fauna endémica: patos de torrente y osos de anteojos." data-en="Emerald glacial lagoon in Los Nevados Park. Endemic wildlife: torrent ducks and spectacled bears.">Laguna glaciar de aguas esmeralda en el Parque Los Nevados. Fauna endémica: patos de torrente y osos de anteojos.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Laguna%20de%20Otun" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tour-card fade-in-card" data-category="caminatas" data-difficulty="easy" data-duration="1day">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Termales Santa Rosa" loading="lazy">
+        <span class="card-badge badge-easy" data-es="Fácil" data-en="Easy">Fácil</span>
+        <button class="card-info-btn" data-diff-key="easy" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Termales de Santa Rosa" data-en="Santa Rosa Hot Springs">Termales de Santa Rosa</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="1 día" data-en="1 day">1 día</span></span>
+          <span>📍 Santa Rosa de Cabal</span>
+        </div>
+        <p class="card-desc" data-es="Piscinas termales naturales en medio de la selva andina. Aguas medicinales rodeadas de vegetación exuberante y cascadas." data-en="Natural thermal pools in the Andean jungle. Medicinal waters surrounded by lush vegetation and waterfalls.">Piscinas termales naturales en medio de la selva andina. Aguas medicinales rodeadas de vegetación exuberante y cascadas.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Termales%20de%20Santa%20Rosa" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tour-card fade-in-card" data-category="caminatas" data-difficulty="easy" data-duration="1day">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&q=80" alt="Cascada La Plata" loading="lazy">
+        <span class="card-badge badge-easy" data-es="Fácil" data-en="Easy">Fácil</span>
+        <button class="card-info-btn" data-diff-key="easy" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Cascada La Plata" data-en="La Plata Waterfall">Cascada La Plata</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="Medio día" data-en="Half day">Medio día</span></span>
+          <span>📍 Huila</span>
+        </div>
+        <p class="card-desc" data-es="Impresionante caída de agua de 200 metros en el Huila. Breve caminata por selva húmeda hasta el espectáculo natural." data-en="Impressive 200-meter waterfall in Huila. Short walk through humid jungle to the natural spectacle.">Impresionante caída de agua de 200 metros en el Huila. Breve caminata por selva húmeda hasta el espectáculo natural.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Cascada%20La%20Plata" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tour-card fade-in-card" data-category="caminatas" data-difficulty="moderate" data-duration="1day">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?w=600&q=80" alt="Mirador Nevado" loading="lazy">
+        <span class="card-badge badge-moderate" data-es="Moderada" data-en="Moderate">Moderada</span>
+        <button class="card-info-btn" data-diff-key="moderate" aria-label="Info dificultad">i</button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" data-es="Mirador Nevado desde Manizales" data-en="Snowfield Viewpoint from Manizales">Mirador Nevado desde Manizales</h3>
+        <div class="card-meta">
+          <span>🕐 <span data-es="1 día" data-en="1 day">1 día</span></span>
+          <span>📍 Manizales</span>
+        </div>
+        <p class="card-desc" data-es="Acceso al mirador del Nevado del Ruiz desde Manizales. Vista panorámica del complejo volcánico y valles cafeteros." data-en="Access to the Nevado del Ruiz viewpoint from Manizales. Panoramic view of the volcanic complex and coffee valleys.">Acceso al mirador del Nevado del Ruiz desde Manizales. Vista panorámica del complejo volcánico y valles cafeteros.</p>
+        <div class="card-actions">
+          <a class="wa-btn" href="https://wa.me/573001234567?text=Hola!%20Me%20interesa%20el%20tour%20Mirador%20Nevado%20desde%20Manizales" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="logros">
+  <div class="section-header fade-in" style="text-align:center;margin-bottom:3rem">
+    <span class="section-tag" data-es="Nuestra Historia" data-en="Our Story">Nuestra Historia</span>
+    <h2 class="section-title" data-es="14 Años de Aventura" data-en="14 Years of Adventure">14 Años de Aventura</h2>
+    <p class="section-desc" data-es="Desde 2010 conectamos personas con la naturaleza más salvaje de Colombia con seguridad y pasión." data-en="Since 2010 we connect people with Colombia's wildest nature with safety and passion.">Desde 2010 conectamos personas con la naturaleza más salvaje de Colombia con seguridad y pasión.</p>
+  </div>
+
+  <div class="stats-row fade-in" style="max-width:1100px;margin:0 auto 4rem">
+    <div class="stat-card">
+      <div class="stat-num" data-target="847" data-count>0</div>
+      <div class="stat-label" data-es="Tours Realizados" data-en="Tours Completed">Tours Realizados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" data-target="12430" data-count>0</div>
+      <div class="stat-label" data-es="Aventureros" data-en="Adventurers">Aventureros</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" data-target="23" data-count>0</div>
+      <div class="stat-label" data-es="Destinos" data-en="Destinations">Destinos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" data-target="8" data-count>0</div>
+      <div class="stat-label" data-es="Certificaciones" data-en="Certifications">Certificaciones</div>
+    </div>
+  </div>
+
+  <div class="timeline fade-in">
+    <div class="tl-item">
+      <div class="tl-content"><div class="tl-header"><span class="tl-emoji">🏔️</span><span class="tl-year">2010</span></div><div class="tl-text" data-es="Fundación de Cimas &amp; Senderos en Manizales con 3 rutas pioneras." data-en="Cimas &amp; Senderos founded in Manizales with 3 pioneer routes.">Fundación de Cimas &amp; Senderos en Manizales con 3 rutas pioneras.</div></div>
+      <div class="tl-dot"></div><div class="tl-placeholder" style="flex:1"></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-placeholder" style="flex:1"></div><div class="tl-dot"></div>
+      <div class="tl-content"><div class="tl-header"><span class="tl-emoji">❄️</span><span class="tl-year">2012</span></div><div class="tl-text" data-es="Primera expedición al Nevado de Santa Isabel. Apertura de la ruta oficial." data-en="First expedition to Nevado de Santa Isabel. Opening of the official route.">Primera expedición al Nevado de Santa Isabel. Apertura de la ruta oficial.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-content"><div class="tl-header"><span class="tl-emoji">🎖️</span><span class="tl-year">2015</span></div><div class="tl-text" data-es="Certificación internacional de todos nuestros guías de alta montaña." data-en="International certification of all our high-mountain guides.">Certificación internacional de todos nuestros guías de alta montaña.</div></div>
+      <div class="tl-dot"></div><div class="tl-placeholder" style="flex:1"></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-placeholder" style="flex:1"></div><div class="tl-dot"></div>
+      <div class="tl-content"><div class="tl-header"><span class="tl-emoji">🏆</span><span class="tl-year">2017</span></div><div class="tl-text" data-es="Premio Nacional de Turismo Sostenible otorgado por Fontur Colombia." data-en="National Sustainable Tourism Award granted by Fontur Colombia.">Premio Nacional de Turismo Sostenible otorgado por Fontur Colombia.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-content"><div class="tl-header"><span class="tl-emoji">🗺️</span><span class="tl-year">2019</span></div><div class="tl-text" data-es="Expansión a 20 destinos en todo el territorio colombiano." data-en="Expansion to 20 destinations across Colombia.">Expansión a 20 destinos en todo el territorio colombiano.</div></div>
+      <div class="tl-dot"></div><div class="tl-placeholder" style="flex:1"></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-placeholder" style="flex:1"></div><div class="tl-dot"></div>
+      <div class="tl-content"><div class="tl-header"><span class="tl-emoji">🎉</span><span class="tl-year">2022</span></div><div class="tl-text" data-es="Celebramos 10.000 aventureros felices. Hito histórico de la empresa." data-en="We celebrate 10,000 happy adventurers. Historic company milestone.">Celebramos 10.000 aventureros felices. Hito histórico de la empresa.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-content"><div class="tl-header"><span class="tl-emoji">🌋</span><span class="tl-year">2024</span></div><div class="tl-text" data-es="Inauguración de la Ruta del Tolima, nuestro tour más ambicioso hasta la fecha." data-en="Inauguration of the Tolima Route, our most ambitious tour to date.">Inauguración de la Ruta del Tolima, nuestro tour más ambicioso hasta la fecha.</div></div>
+      <div class="tl-dot"></div><div class="tl-placeholder" style="flex:1"></div>
+    </div>
+  </div>
+
+  <div class="section-header fade-in" style="margin-bottom:1.5rem">
+    <h3 class="section-title" style="font-size:2rem" data-es="Nuestras Certificaciones" data-en="Our Certifications">Nuestras Certificaciones</h3>
+  </div>
+  <div class="certs-row fade-in" style="max-width:900px;margin:0 auto">
+    <div class="cert-card"><div class="cert-icon">🏔️</div><div class="cert-name" data-es="Guías Alta Montaña" data-en="High Mountain Guides">Guías Alta Montaña</div><div class="cert-org">UIAGM / IFMGA</div></div>
+    <div class="cert-card"><div class="cert-icon">🌿</div><div class="cert-name" data-es="Turismo Sostenible" data-en="Sustainable Tourism">Turismo Sostenible</div><div class="cert-org">Norma NTS-TS 003</div></div>
+    <div class="cert-card"><div class="cert-icon">🩺</div><div class="cert-name" data-es="Primeros Auxilios" data-en="First Aid">Primeros Auxilios</div><div class="cert-org">Cruz Roja Colombiana</div></div>
+    <div class="cert-card"><div class="cert-icon">⭐</div><div class="cert-name" data-es="Excelencia Turística" data-en="Tourism Excellence">Excelencia Turística</div><div class="cert-org">Fontur Colombia</div></div>
+    <div class="cert-card"><div class="cert-icon">🦺</div><div class="cert-name" data-es="Seguridad en Altura" data-en="Height Safety">Seguridad en Altura</div><div class="cert-org">SENA Colombia</div></div>
+    <div class="cert-card"><div class="cert-icon">🌎</div><div class="cert-name" data-es="Ecoturismo" data-en="Ecotourism">Ecoturismo</div><div class="cert-org">MinCiencias</div></div>
+    <div class="cert-card"><div class="cert-icon">🧗</div><div class="cert-name" data-es="Escalada Deportiva" data-en="Sport Climbing">Escalada Deportiva</div><div class="cert-org">FCC Colombia</div></div>
+    <div class="cert-card"><div class="cert-icon">🏕️</div><div class="cert-name" data-es="Camping Responsable" data-en="Responsible Camping">Camping Responsable</div><div class="cert-org">Parques Nacionales</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid" style="max-width:1100px;margin:0 auto">
+    <div class="footer-brand">
+      <a href="#hero" class="nav-logo" style="display:inline-block;margin-bottom:.5rem">Cimas <span>&amp; Senderos</span></a>
+      <p data-es="Operadora de turismo de aventura certificada. Exploramos Colombia con responsabilidad, pasión y cero compromisos con tu seguridad." data-en="Certified adventure tourism operator. We explore Colombia with responsibility, passion and zero compromise on your safety.">Operadora de turismo de aventura certificada. Exploramos Colombia con responsabilidad, pasión y cero compromisos con tu seguridad.</p>
+      <a class="footer-wa" href="https://wa.me/573001234567?text=Hola!%20Quiero%20informacion%20sobre%20sus%20tours" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        +57 300 123 4567
+      </a>
+    </div>
+    <div class="footer-col">
+      <h4 data-es="Tours" data-en="Tours">Tours</h4>
+      <ul>
+        <li><a href="#montana" data-es="Montaña" data-en="Mountain">Montaña</a></li>
+        <li><a href="#senderos" data-es="Senderos" data-en="Trails">Senderos</a></li>
+        <li><a href="#caminatas" data-es="Caminatas" data-en="Hikes">Caminatas</a></li>
+        <li><a href="#logros" data-es="Sobre Nosotros" data-en="About Us">Sobre Nosotros</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-es="Contacto" data-en="Contact">Contacto</h4>
+      <ul>
+        <li><a href="tel:+573001234567">+57 300 123 4567</a></li>
+        <li><a href="mailto:info@cimasysenderos.co">info@cimasysenderos.co</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom" style="max-width:1100px;margin:0 auto">
+    <p data-es="© 2024 Cimas &amp; Senderos. Todos los derechos reservados." data-en="© 2024 Cimas &amp; Senderos. All rights reserved.">© 2024 Cimas &amp; Senderos. Todos los derechos reservados.</p>
+    <p data-es="Hecho con amor en Colombia" data-en="Made with love in Colombia">Hecho con amor en Colombia</p>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="diff-modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">✕</button>
+    <span class="modal-diff-badge" id="modal-badge"></span>
+    <h3 class="modal-title" id="modal-title"></h3>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ── DIFFICULTY DATA ──
+const diffData = {
+  easy: {
+    es: { label: 'Fácil', title: 'Nivel Fácil', color: '#2ecc71', body: 'Apto para todas las edades y condiciones físicas. Sin experiencia previa requerida.<ul><li>Terreno suave y bien señalizado</li><li>Desnivel menor a 500 m</li><li>Duración máxima 4 horas</li><li>Ritmo tranquilo y accesible</li></ul>' },
+    en: { label: 'Easy', title: 'Easy Level', color: '#2ecc71', body: 'Suitable for all ages and fitness levels. No prior experience required.<ul><li>Smooth and well-marked terrain</li><li>Less than 500 m elevation gain</li><li>Maximum 4 hours duration</li><li>Relaxed, accessible pace</li></ul>' }
+  },
+  moderate: {
+    es: { label: 'Moderada', title: 'Nivel Moderado', color: '#f39c12', body: 'Requiere condición física media y calzado de trekking adecuado.<ul><li>500 a 1000 m de desnivel</li><li>Experiencia básica en caminatas recomendada</li><li>Terreno variado con pendientes</li><li>Duración 4 a 8 horas</li></ul>' },
+    en: { label: 'Moderate', title: 'Moderate Level', color: '#f39c12', body: 'Requires average fitness and proper trekking footwear.<ul><li>500 to 1,000 m elevation gain</li><li>Basic hiking experience recommended</li><li>Varied terrain with slopes</li><li>Duration 4 to 8 hours</li></ul>' }
+  },
+  hard: {
+    es: { label: 'Difícil', title: 'Nivel Difícil', color: '#e74c3c', body: 'Para personas con alta condición física y experiencia previa en montaña.<ul><li>Más de 1000 m de desnivel</li><li>Posibles temperaturas bajo cero</li><li>Equipo técnico básico necesario</li><li>Experiencia en montaña indispensable</li></ul>' },
+    en: { label: 'Hard', title: 'Hard Level', color: '#e74c3c', body: 'For people with high fitness and prior mountain experience.<ul><li>More than 1,000 m elevation gain</li><li>Possible below-zero temperatures</li><li>Basic technical gear required</li><li>Mountain experience essential</li></ul>' }
+  },
+  expert: {
+    es: { label: 'Experto', title: 'Nivel Experto', color: '#8e44ad', body: 'Exclusivo para montañistas experimentados con formación técnica.<ul><li>Técnica de alta montaña requerida</li><li>Crampones y piolet obligatorios</li><li>Condición física de élite</li><li>Experiencia previa en glaciares necesaria</li></ul>' },
+    en: { label: 'Expert', title: 'Expert Level', color: '#8e44ad', body: 'Exclusive for experienced mountaineers with technical training.<ul><li>High-altitude technique required</li><li>Crampons and ice axe mandatory</li><li>Elite fitness level</li><li>Previous glacier experience needed</li></ul>' }
+  }
+};
+
+// ── LANGUAGE ──
+let lang = 'es';
+const langBtn = document.getElementById('lang-btn');
+
+function applyLang() {
+  document.querySelectorAll('[data-es]').forEach(el => {
+    const text = el.getAttribute('data-' + lang);
+    if (!text) return;
+    if (text.includes('<')) el.innerHTML = text;
+    else el.textContent = text;
+  });
+  langBtn.textContent = lang === 'es' ? 'English' : 'Español';
+}
+
+langBtn.addEventListener('click', () => {
+  lang = lang === 'es' ? 'en' : 'es';
+  applyLang();
+});
+
+// ── NAV HAMBURGER ──
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('nav-links').classList.toggle('open');
+});
+
+// ── HERO CANVAS PARTICLES ──
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function createParticles() {
+    particles = [];
+    const count = Math.floor((W * H) / 5500);
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: Math.random() * 1.5 + 0.3,
+        alpha: Math.random() * 0.8 + 0.15,
+        speed: Math.random() * 0.25 + 0.04,
+        drift: (Math.random() - 0.5) * 0.18,
+        twinkle: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const grad = ctx.createRadialGradient(W * 0.5, H * 0.42, 0, W * 0.5, H * 0.42, W * 0.65);
+    grad.addColorStop(0, 'rgba(10,46,26,0.3)');
+    grad.addColorStop(0.5, 'rgba(30,61,107,0.15)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    particles.forEach(p => {
+      p.twinkle += 0.018;
+      const a = p.alpha * (0.55 + 0.45 * Math.sin(p.twinkle));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(210,200,178,${a})`;
+      ctx.fill();
+      p.y -= p.speed; p.x += p.drift;
+      if (p.y < -5) { p.y = H + 5; p.x = Math.random() * W; }
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize(); createParticles(); draw();
+  window.addEventListener('resize', () => { resize(); createParticles(); });
+})();
+
+// ── SNOWFLAKES ──
+(function() {
+  const c = document.getElementById('snow-container');
+  const fl = ['❄', '❅', '❆', '·', '*', '✦'];
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'snowflake';
+    el.textContent = fl[Math.floor(Math.random() * fl.length)];
+    const sz = Math.random() * 14 + 7;
+    el.style.cssText = `left:${Math.random()*100}%;font-size:${sz}px;animation-duration:${Math.random()*10+8}s;animation-delay:-${Math.random()*10}s;opacity:0`;
+    c.appendChild(el);
+  }
+})();
+
+// ── LEAVES ──
+(function() {
+  const c = document.getElementById('leaf-container');
+  const lv = ['🍃', '🌿', '🍀', '🌱', '🍂'];
+  for (let i = 0; i < 28; i++) {
+    const el = document.createElement('div');
+    el.className = 'leaf';
+    el.textContent = lv[Math.floor(Math.random() * lv.length)];
+    const sz = Math.random() * 10 + 10;
+    el.style.cssText = `left:${Math.random()*100}%;font-size:${sz}px;animation-duration:${Math.random()*12+8}s;animation-delay:-${Math.random()*12}s;opacity:0`;
+    c.appendChild(el);
+  }
+})();
+
+// ── FIREFLIES ──
+(function() {
+  const c = document.getElementById('firefly-container');
+  for (let i = 0; i < 38; i++) {
+    const el = document.createElement('div');
+    el.className = 'firefly';
+    const dx = (Math.random() - 0.5) * 130;
+    const dy = (Math.random() - 0.5) * 90;
+    el.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--dx:${dx}px;--dy:${dy}px;animation-duration:${Math.random()*6+4}s;animation-delay:-${Math.random()*8}s`;
+    c.appendChild(el);
+  }
+})();
+
+// ── FILTERS ──
+let activeFilters = { diff: 'all', dur: 'all', cat: 'all' };
+
+function applyFilters() {
+  document.querySelectorAll('.tour-card').forEach(card => {
+    const catOk = activeFilters.cat === 'all' || card.dataset.category === activeFilters.cat;
+    const diffOk = activeFilters.diff === 'all' || card.dataset.difficulty === activeFilters.diff;
+    const durOk = activeFilters.dur === 'all' || card.dataset.duration === activeFilters.dur;
+    card.classList.toggle('hidden', !(catOk && diffOk && durOk));
+  });
+}
+
+document.querySelectorAll('[data-diff]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-diff]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilters.diff = btn.dataset.diff;
+    applyFilters();
+  });
+});
+document.querySelectorAll('[data-dur]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-dur]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilters.dur = btn.dataset.dur;
+    applyFilters();
+  });
+});
+document.querySelectorAll('[data-cat]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilters.cat = btn.dataset.cat;
+    applyFilters();
+  });
+});
+
+// ── MODAL ──
+const modal = document.getElementById('diff-modal');
+const modalBadge = document.getElementById('modal-badge');
+const modalTitle = document.getElementById('modal-title');
+const modalBody = document.getElementById('modal-body');
+
+document.querySelectorAll('.card-info-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const key = btn.dataset.diffKey;
+    const d = diffData[key][lang];
+    modalBadge.textContent = d.label;
+    modalBadge.style.background = d.color;
+    modalTitle.textContent = d.title;
+    modalBody.innerHTML = d.body;
+    modal.classList.add('open');
+  });
+});
+
+document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('open'));
+modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('open'); });
+
+// ── COUNTERS ──
+function animateCounter(el, target, duration) {
+  let start = null;
+  function step(ts) {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(eased * target).toLocaleString('es-CO');
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = target.toLocaleString('es-CO');
+  }
+  requestAnimationFrame(step);
+}
+
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounter(entry.target, parseInt(entry.target.dataset.target), 1800);
+      counterObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+
+// ── FADE-IN OBSERVER ──
+const fadeObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      fadeObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in, .fade-in-card').forEach(el => fadeObs.observe(el));
+
+// ── SMOOTH SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      document.getElementById('nav-links').classList.remove('open');
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Initial apply
+applyLang();
+</script>
+</body>
+</html>
