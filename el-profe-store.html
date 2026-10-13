@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Profe Store · Zapatos de calidad</title>
+<meta name="description" content="El Profe Store: catálogo de zapatos de excelente calidad, cómodos y duraderos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:oklch(98.5% .004 250);
+  --surface:oklch(100% 0 0);
+  --surface-2:oklch(95.5% .008 250);
+  --ink:oklch(22% .04 260);
+  --muted:oklch(44% .03 260);
+  --line:oklch(88% .01 250);
+  --brand:oklch(30% .07 260);
+  --accent:oklch(72% .17 55);
+  --accent-ink:oklch(20% .05 55);
+  --accent-text:oklch(50% .16 45);
+  --ok:oklch(48% .13 155);
+  --shadow:0 1px 2px oklch(20% .04 260/.06),0 8px 24px oklch(20% .04 260/.08);
+  --ease:cubic-bezier(.16,1,.3,1);
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:oklch(17% .02 260);
+  --surface:oklch(22% .025 260);
+  --surface-2:oklch(26% .03 260);
+  --ink:oklch(96% .005 250);
+  --muted:oklch(76% .02 255);
+  --line:oklch(34% .03 260);
+  --brand:oklch(85% .06 255);
+  --accent:oklch(75% .16 55);
+  --accent-ink:oklch(18% .04 55);
+  --accent-text:oklch(80% .14 60);
+  --ok:oklch(78% .14 155);
+  --shadow:0 1px 2px oklch(0% 0 0/.3),0 8px 24px oklch(0% 0 0/.35);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;overflow-x:hidden;transition:background .3s var(--ease),color .3s var(--ease)}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:700;line-height:1.1;letter-spacing:-.01em}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{width:min(1180px,100% - 32px);margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:50;background:color-mix(in oklab,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:'Fraunces',serif;font-weight:700;font-size:1.25rem;color:var(--ink)}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--brand);display:grid;place-items:center}
+.logo-mark svg{width:22px;height:22px}
+.logo b{color:var(--accent-text)}
+.tools{display:flex;align-items:center;gap:8px}
+.tbtn{height:40px;min-width:40px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:600;font-size:.88rem;transition:transform .2s var(--ease),border-color .2s}
+.tbtn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.tbtn svg{width:18px;height:18px}
+select.tbtn{appearance:none;padding-right:12px;cursor:pointer}
+#themeBtn .moon{display:none}
+:root[data-theme="dark"] #themeBtn .sun{display:none}
+:root[data-theme="dark"] #themeBtn .moon{display:block}
+
+/* HERO */
+.hero{padding:56px 0 40px;background:radial-gradient(900px 400px at 85% 0,color-mix(in oklab,var(--accent) 22%,transparent),transparent 70%)}
+.hero-grid{display:grid;gap:32px;align-items:center}
+.eyebrow{display:inline-block;font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-text);margin-bottom:14px}
+.hero h1{font-size:clamp(2.2rem,6vw,4rem);margin-bottom:16px}
+.hero p.lead{font-size:1.1rem;color:var(--muted);max-width:52ch;margin-bottom:24px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:999px;border:0;font-weight:700;text-decoration:none;transition:transform .25s var(--ease),box-shadow .25s}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 6px 18px color-mix(in oklab,var(--accent) 40%,transparent)}
+.btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn-wa{background:oklch(52% .15 155);color:#fff;width:100%}
+.hero-art{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:var(--shadow);position:relative}
+.hero-art svg{width:100%;height:auto;display:block;transform:rotate(-6deg)}
+.badge-float{position:absolute;right:18px;top:18px;background:var(--brand);color:var(--bg);padding:6px 12px;border-radius:999px;font-size:.78rem;font-weight:700}
+@media(min-width:860px){.hero-grid{grid-template-columns:1.05fr .95fr}.hero{padding:80px 0 56px}}
+
+/* PERKS */
+.perks{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:8px 0 24px}
+.perk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px}
+.perk span{font-size:1.5rem}
+.perk h3{font-family:'Manrope',sans-serif;font-size:.98rem;margin:6px 0 2px}
+.perk p{font-size:.85rem;color:var(--muted)}
+@media(min-width:760px){.perks{grid-template-columns:repeat(4,1fr)}}
+
+/* CATALOG */
+.section{padding:40px 0}
+.section h2{font-size:clamp(1.7rem,4vw,2.4rem);margin-bottom:6px}
+.section .sub{color:var(--muted);margin-bottom:20px}
+.controls{display:grid;gap:12px;margin-bottom:20px}
+.search{position:relative}
+.search input{width:100%;height:48px;border-radius:999px;border:1px solid var(--line);background:var(--surface);padding:0 18px 0 44px}
+.search svg{position:absolute;left:15px;top:14px;width:20px;height:20px;color:var(--muted)}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.chip{flex:none;height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:.9rem;transition:all .2s}
+.chip[aria-pressed="true"]{background:var(--brand);color:var(--bg);border-color:var(--brand)}
+.sort{height:40px;border-radius:999px;border:1px solid var(--line);background:var(--surface);padding:0 14px}
+.count{font-size:.88rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:760px){.grid{grid-template-columns:repeat(3,1fr);gap:20px}}
+@media(min-width:1040px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .3s var(--ease),box-shadow .3s}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.card-img{position:relative;background:var(--surface-2);aspect-ratio:1/.82;display:grid;place-items:center;padding:14px;border:0;width:100%}
+.card-img svg{width:100%;height:auto}
+.tag{position:absolute;left:10px;top:10px;background:var(--accent);color:var(--accent-ink);font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:999px}
+.fav{position:absolute;right:8px;top:8px;width:36px;height:36px;border-radius:50%;border:0;background:var(--surface);display:grid;place-items:center;box-shadow:var(--shadow)}
+.fav svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
+.fav[aria-pressed="true"]{color:oklch(58% .22 25)}
+.fav[aria-pressed="true"] svg{fill:currentColor}
+.card-body{padding:12px 14px 16px;display:flex;flex-direction:column;gap:4px;flex:1}
+.cat{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text)}
+.card h3{font-size:1.1rem}
+.price{font-weight:800;font-size:1.1rem;margin-top:auto;padding-top:6px}
+.old{font-weight:500;font-size:.85rem;color:var(--muted);text-decoration:line-through;margin-left:6px}
+.comfort{display:flex;gap:2px;align-items:center;font-size:.78rem;color:var(--muted)}
+.dots i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--line);margin-right:2px}
+.dots i.on{background:var(--ok)}
+.card .btn{min-height:42px;font-size:.9rem;margin-top:10px;width:100%;padding:0 12px}
+.empty{text-align:center;padding:48px 0;color:var(--muted)}
+
+/* ABOUT / CONTACT */
+.about{background:var(--surface);border-block:1px solid var(--line)}
+.about-grid{display:grid;gap:28px}
+@media(min-width:860px){.about-grid{grid-template-columns:1fr 1fr}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.stat{background:var(--surface-2);border-radius:16px;padding:14px;text-align:center}
+.stat b{font-family:'Fraunces',serif;font-size:1.6rem;display:block;color:var(--accent-text)}
+.stat span{font-size:.8rem;color:var(--muted)}
+.contact-list{list-style:none;display:grid;gap:12px;margin-top:8px}
+.contact-list li{display:flex;gap:12px;align-items:flex-start;background:var(--surface-2);padding:14px;border-radius:14px}
+footer{padding:28px 0 40px;color:var(--muted);font-size:.88rem;text-align:center}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:oklch(10% .02 260/.6);display:none;align-items:flex-end;justify-content:center;z-index:100;padding:0}
+.overlay.open{display:flex}
+.modal{background:var(--bg);width:min(760px,100%);max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;position:relative;animation:up .4s var(--ease)}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+@media(min-width:760px){.overlay{align-items:center;padding:20px}.modal{border-radius:24px}}
+.close{position:absolute;right:12px;top:12px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:1.3rem;line-height:1;z-index:2}
+.m-grid{display:grid}
+@media(min-width:760px){.m-grid{grid-template-columns:1fr 1fr}}
+.m-img{background:var(--surface-2);padding:32px 20px;display:grid;place-items:center}
+.m-img svg{width:100%;height:auto}
+.m-info{padding:24px 20px 28px;display:grid;gap:14px;align-content:start}
+.m-info h2{font-size:1.8rem;padding-right:36px}
+.m-info .price{font-size:1.4rem;padding:0}
+.sizes{display:flex;flex-wrap:wrap;gap:8px}
+.size{width:46px;height:42px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);font-weight:700}
+.size[aria-pressed="true"]{background:var(--brand);color:var(--bg);border-color:var(--brand)}
+.label{font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.feat{list-style:none;display:grid;gap:6px;font-size:.92rem}
+.feat li::before{content:"✓ ";color:var(--ok);font-weight:800}
+.warn{color:oklch(52% .2 25);font-size:.85rem;min-height:1.2em}
+:root[data-theme="dark"] .warn{color:oklch(78% .15 25)}
+
+/* MOTION */
+.reveal{animation:rise .7s var(--ease) both}
+@keyframes rise{from{opacity:.0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="El Profe Store">
+      <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="oklch(75% .16 55)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17v-3l5-1 3-4 2 1c1 2 3 3 6 4l4 1v3z"/></svg></span>
+      <span>El Profe <b>Store</b></span>
+    </a>
+    <div class="tools">
+      <label class="sr" for="langSel" data-i18n="lang">Idioma</label>
+      <select id="langSel" class="tbtn" aria-label="Idioma">
+        <option value="es">🇨🇴 ES</option>
+        <option value="en">🇺🇸 EN</option>
+        <option value="pt">🇧🇷 PT</option>
+        <option value="fr">🇫🇷 FR</option>
+      </select>
+      <button id="themeBtn" class="tbtn" aria-label="Cambiar tema" data-i18n-aria="theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <span class="eyebrow" data-i18n="eyebrow"></span>
+        <h1 data-i18n="heroTitle"></h1>
+        <p class="lead" data-i18n="heroLead"></p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#catalogo" data-i18n="ctaCatalog"></a>
+          <a class="btn btn-ghost" href="#contacto" data-i18n="ctaContact"></a>
+        </div>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <span class="badge-float" data-i18n="heroBadge"></span>
+        <div id="heroShoe"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="perks">
+      <div class="perk"><span>🛋️</span><h3 data-i18n="p1t"></h3><p data-i18n="p1d"></p></div>
+      <div class="perk"><span>🔄</span><h3 data-i18n="p2t"></h3><p data-i18n="p2d"></p></div>
+      <div class="perk"><span>🧵</span><h3 data-i18n="p3t"></h3><p data-i18n="p3d"></p></div>
+      <div class="perk"><span>🚚</span><h3 data-i18n="p4t"></h3><p data-i18n="p4d"></p></div>
+    </div>
+  </div>
+
+  <section class="section" id="catalogo">
+    <div class="wrap">
+      <h2 data-i18n="catTitle"></h2>
+      <p class="sub" data-i18n="catSub"></p>
+      <div class="controls">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <label class="sr" for="q" data-i18n="search"></label>
+          <input id="q" type="search" autocomplete="off" data-i18n-ph="search">
+        </div>
+        <div class="chips" id="chips" role="group"></div>
+        <div class="row">
+          <span class="count" id="count" aria-live="polite"></span>
+          <div>
+            <label class="sr" for="sort" data-i18n="sortBy"></label>
+            <select id="sort" class="sort">
+              <option value="feat" data-i18n="sFeat"></option>
+              <option value="asc" data-i18n="sAsc"></option>
+              <option value="desc" data-i18n="sDesc"></option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="section about" id="nosotros">
+    <div class="wrap about-grid">
+      <div>
+        <h2 data-i18n="aboutTitle"></h2>
+        <p class="sub" data-i18n="aboutText"></p>
+        <div class="stats">
+          <div class="stat"><b>12+</b><span data-i18n="st1"></span></div>
+          <div class="stat"><b>25.000</b><span data-i18n="st2"></span></div>
+          <div class="stat"><b>4.9★</b><span data-i18n="st3"></span></div>
+        </div>
+      </div>
+      <div id="contacto">
+        <h2 data-i18n="contactTitle"></h2>
+        <ul class="contact-list">
+          <li><span>📍</span><div><b data-i18n="addrT"></b><br><span data-i18n="addr"></span></div></li>
+          <li><span>🕒</span><div><b data-i18n="hoursT"></b><br><span data-i18n="hours"></span></div></li>
+          <li><span>📞</span><div><b>WhatsApp</b><br>+57 300 123 4567</div></li>
+        </ul>
+        <p style="margin-top:16px"><a class="btn btn-wa" id="waGeneral" target="_blank" rel="noopener" data-i18n="waGeneral"></a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">© 2026 El Profe Store · <span data-i18n="rights"></span></div></footer>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="mName">
+  <div class="modal">
+    <button class="close" id="closeBtn" aria-label="Cerrar" data-i18n-aria="close">×</button>
+    <div class="m-grid">
+      <div class="m-img" id="mImg"></div>
+      <div class="m-info">
+        <span class="cat" id="mCat"></span>
+        <h2 id="mName"></h2>
+        <div class="price" id="mPrice"></div>
+        <p id="mDesc" style="color:var(--muted)"></p>
+        <ul class="feat" id="mFeat"></ul>
+        <div>
+          <div class="label" data-i18n="pickSize"></div>
+          <div class="sizes" id="sizes" role="group"></div>
+          <p class="warn" id="warn" role="alert"></p>
+        </div>
+        <a class="btn btn-wa" id="mWa" target="_blank" rel="noopener" data-i18n="orderWa"></a>
+        <a href="#" id="sizeGuide" style="font-size:.85rem;color:var(--muted)" data-i18n="sizeNote"></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- Datos ---------- */
+const WA_NUMBER = "573001234567"; // número de ejemplo
+
+const T = {
+ es:{lang:"Idioma",theme:"Cambiar tema",close:"Cerrar",eyebrow:"Calidad que se siente en cada paso",heroTitle:"Zapatos hechos para caminar cómodo, todos los días.",heroLead:"En El Profe Store seleccionamos cuero, suelas y plantillas de primera para que estrenes zapatos que te abrazan el pie desde el primer día.",ctaCatalog:"Ver catálogo",ctaContact:"Escríbenos",heroBadge:"Garantía 6 meses",
+  p1t:"Comodidad real",p1d:"Plantillas ergonómicas en todos los modelos.",p2t:"Cambio de talla",p2d:"Si no te queda perfecto, lo cambiamos gratis.",p3t:"Materiales premium",p3d:"Cuero genuino y costuras reforzadas.",p4t:"Envío a todo el país",p4d:"Gratis en compras desde $250.000.",
+  catTitle:"Nuestro catálogo",catSub:"Escoge tu estilo, elige tu talla y pídelo por WhatsApp. Sin complicaciones.",search:"Buscar zapatos…",sortBy:"Ordenar",sFeat:"Destacados",sAsc:"Precio: menor a mayor",sDesc:"Precio: mayor a menor",
+  all:"Todos",sport:"Deportivos",formal:"Formales",casual:"Casuales",boots:"Botas",sandals:"Sandalias",favs:"♥ Favoritos",
+  results:n=>n+(n===1?" producto":" productos"),none:"No encontramos zapatos con esa búsqueda.",view:"Ver y pedir",
+  pickSize:"Elige tu talla (EU)",sizeNote:"¿No sabes tu talla? Te ayudamos por WhatsApp",needSize:"Por favor elige una talla antes de pedir.",orderWa:"Pedir por WhatsApp",
+  newTag:"NUEVO",saleTag:"OFERTA",comfort:"Comodidad",
+  aboutTitle:"Sobre El Profe Store",aboutText:"Nacimos en 2014 en Medellín con una idea simple: que comprar zapatos no sea una apuesta. Trabajamos con talleres artesanales que cuidan cada detalle, y probamos cada modelo antes de ofrecértelo. Si no estás feliz, lo resolvemos.",st1:"años de experiencia",st2:"clientes felices",st3:"calificación",
+  contactTitle:"Visítanos o escríbenos",addrT:"Dirección",addr:"Cra. 43A #7-50, El Poblado, Medellín",hoursT:"Horario",hours:"Lun–Sáb 9:00–19:00 · Dom 10:00–16:00",waGeneral:"Hablar con un asesor",rights:"Todos los derechos reservados.",
+  waMsg:(n,s,p)=>`¡Hola El Profe Store! Quiero pedir: ${n}, talla ${s}, precio ${p}.`,waGen:"¡Hola El Profe Store! Quisiera asesoría para elegir unos zapatos.",waSize:"¡Hola El Profe Store! Necesito ayuda para saber mi talla."},
+ en:{lang:"Language",theme:"Toggle theme",close:"Close",eyebrow:"Quality you can feel with every step",heroTitle:"Shoes made for walking in comfort, every day.",heroLead:"At El Profe Store we pick top-grade leather, soles and insoles so your new shoes feel like home from the very first day.",ctaCatalog:"View catalog",ctaContact:"Message us",heroBadge:"6-month warranty",
+  p1t:"Real comfort",p1d:"Ergonomic insoles in every model.",p2t:"Free size swap",p2d:"If it isn't a perfect fit, we swap it for free.",p3t:"Premium materials",p3d:"Genuine leather and reinforced stitching.",p4t:"Nationwide shipping",p4d:"Free on orders over COP 250,000.",
+  catTitle:"Our catalog",catSub:"Pick your style, choose your size and order via WhatsApp. No hassle.",search:"Search shoes…",sortBy:"Sort",sFeat:"Featured",sAsc:"Price: low to high",sDesc:"Price: high to low",
+  all:"All",sport:"Sport",formal:"Formal",casual:"Casual",boots:"Boots",sandals:"Sandals",favs:"♥ Favorites",
+  results:n=>n+(n===1?" product":" products"),none:"We couldn't find shoes matching your search.",view:"View & order",
+  pickSize:"Choose your size (EU)",sizeNote:"Not sure of your size? We'll help on WhatsApp",needSize:"Please choose a size before ordering.",orderWa:"Order on WhatsApp",
+  newTag:"NEW",saleTag:"SALE",comfort:"Comfort",
+  aboutTitle:"About El Profe Store",aboutText:"We started in 2014 in Medellín with a simple idea: buying shoes shouldn't be a gamble. We work with artisan workshops that care about every detail, and we test every model before offering it. If you're not happy, we make it right.",st1:"years of experience",st2:"happy customers",st3:"rating",
+  contactTitle:"Visit or message us",addrT:"Address",addr:"Cra. 43A #7-50, El Poblado, Medellín",hoursT:"Opening hours",hours:"Mon–Sat 9:00–19:00 · Sun 10:00–16:00",waGeneral:"Talk to an advisor",rights:"All rights reserved.",
+  waMsg:(n,s,p)=>`Hi El Profe Store! I'd like to order: ${n}, size ${s}, price ${p}.`,waGen:"Hi El Profe Store! I'd like some help choosing shoes.",waSize:"Hi El Profe Store! I need help finding my size."},
+ pt:{lang:"Idioma",theme:"Alternar tema",close:"Fechar",eyebrow:"Qualidade que você sente a cada passo",heroTitle:"Sapatos feitos para caminhar com conforto, todos os dias.",heroLead:"Na El Profe Store escolhemos couro, solas e palmilhas de primeira para que seu sapato novo abrace o pé desde o primeiro dia.",ctaCatalog:"Ver catálogo",ctaContact:"Fale conosco",heroBadge:"Garantia de 6 meses",
+  p1t:"Conforto de verdade",p1d:"Palmilhas ergonômicas em todos os modelos.",p2t:"Troca de tamanho",p2d:"Se não servir perfeitamente, trocamos grátis.",p3t:"Materiais premium",p3d:"Couro legítimo e costuras reforçadas.",p4t:"Envio para todo o país",p4d:"Grátis em compras acima de COP 250.000.",
+  catTitle:"Nosso catálogo",catSub:"Escolha seu estilo, seu tamanho e peça pelo WhatsApp. Sem complicação.",search:"Buscar sapatos…",sortBy:"Ordenar",sFeat:"Destaques",sAsc:"Preço: menor para maior",sDesc:"Preço: maior para menor",
+  all:"Todos",sport:"Esportivos",formal:"Sociais",casual:"Casuais",boots:"Botas",sandals:"Sandálias",favs:"♥ Favoritos",
+  results:n=>n+(n===1?" produto":" produtos"),none:"Não encontramos sapatos para essa busca.",view:"Ver e pedir",
+  pickSize:"Escolha seu tamanho (EU)",sizeNote:"Não sabe seu tamanho? Ajudamos pelo WhatsApp",needSize:"Escolha um tamanho antes de pedir.",orderWa:"Pedir pelo WhatsApp",
+  newTag:"NOVO",saleTag:"OFERTA",comfort:"Conforto",
+  aboutTitle:"Sobre a El Profe Store",aboutText:"Nascemos em 2014 em Medellín com uma ideia simples: comprar sapatos não deve ser uma aposta. Trabalhamos com ateliês artesanais atentos a cada detalhe e testamos cada modelo antes de oferecê-lo. Se não ficar feliz, resolvemos.",st1:"anos de experiência",st2:"clientes felizes",st3:"avaliação",
+  contactTitle:"Visite ou escreva",addrT:"Endereço",addr:"Cra. 43A #7-50, El Poblado, Medellín",hoursT:"Horário",hours:"Seg–Sáb 9:00–19:00 · Dom 10:00–16:00",waGeneral:"Falar com um atendente",rights:"Todos os direitos reservados.",
+  waMsg:(n,s,p)=>`Olá El Profe Store! Quero pedir: ${n}, tamanho ${s}, preço ${p}.`,waGen:"Olá El Profe Store! Gostaria de ajuda para escolher sapatos.",waSize:"Olá El Profe Store! Preciso de ajuda para saber meu tamanho."},
+ fr:{lang:"Langue",theme:"Changer de thème",close:"Fermer",eyebrow:"Une qualité qui se sent à chaque pas",heroTitle:"Des chaussures pensées pour marcher confortablement, chaque jour.",heroLead:"Chez El Profe Store, nous choisissons cuir, semelles et semelles intérieures haut de gamme pour que vos nouvelles chaussures épousent votre pied dès le premier jour.",ctaCatalog:"Voir le catalogue",ctaContact:"Écrivez-nous",heroBadge:"Garantie 6 mois",
+  p1t:"Vrai confort",p1d:"Semelles ergonomiques sur tous les modèles.",p2t:"Échange de pointure",p2d:"Si ce n'est pas parfait, on échange gratuitement.",p3t:"Matériaux premium",p3d:"Cuir véritable et coutures renforcées.",p4t:"Livraison nationale",p4d:"Gratuite dès 250 000 COP d'achat.",
+  catTitle:"Notre catalogue",catSub:"Choisissez votre style, votre pointure et commandez par WhatsApp. Simple.",search:"Rechercher des chaussures…",sortBy:"Trier",sFeat:"En vedette",sAsc:"Prix croissant",sDesc:"Prix décroissant",
+  all:"Tout",sport:"Sport",formal:"Habillées",casual:"Décontractées",boots:"Bottes",sandals:"Sandales",favs:"♥ Favoris",
+  results:n=>n+(n>1?" produits":" produit"),none:"Aucune chaussure ne correspond à votre recherche.",view:"Voir et commander",
+  pickSize:"Choisissez votre pointure (EU)",sizeNote:"Pointure incertaine ? On vous aide sur WhatsApp",needSize:"Veuillez choisir une pointure avant de commander.",orderWa:"Commander sur WhatsApp",
+  newTag:"NOUVEAU",saleTag:"PROMO",comfort:"Confort",
+  aboutTitle:"À propos d'El Profe Store",aboutText:"Nous sommes nés en 2014 à Medellín avec une idée simple : acheter des chaussures ne doit pas être un pari. Nous travaillons avec des ateliers artisanaux soucieux du détail et testons chaque modèle avant de vous le proposer. Pas satisfait ? On arrange ça.",st1:"ans d'expérience",st2:"clients heureux",st3:"note",
+  contactTitle:"Venez nous voir ou écrivez-nous",addrT:"Adresse",addr:"Cra. 43A #7-50, El Poblado, Medellín",hoursT:"Horaires",hours:"Lun–Sam 9h–19h · Dim 10h–16h",waGeneral:"Parler à un conseiller",rights:"Tous droits réservés.",
+  waMsg:(n,s,p)=>`Bonjour El Profe Store ! Je souhaite commander : ${n}, pointure ${s}, prix ${p}.`,waGen:"Bonjour El Profe Store ! J'aimerais des conseils pour choisir des chaussures.",waSize:"Bonjour El Profe Store ! J'ai besoin d'aide pour ma pointure."}
+};
+
+/* d = descripción, f = características (por idioma) */
+const P = [
+ {id:1,name:"Nube Runner",cat:"sport",type:"sneaker",price:289000,c:["#1f3a6e","#f08a24","#f4f4f4"],comfort:5,tag:"new",
+  d:{es:"Tenis ultraligeros con amortiguación en espuma para caminar o correr sin cansancio.",en:"Ultralight sneakers with foam cushioning for walking or running without fatigue.",pt:"Tênis ultraleves com amortecimento em espuma para caminhar ou correr sem cansaço.",fr:"Baskets ultralégères avec amorti en mousse pour marcher ou courir sans fatigue."},
+  f:{es:["Peso: 260 g","Malla transpirable","Suela antideslizante"],en:["Weight: 260 g","Breathable mesh","Non-slip outsole"],pt:["Peso: 260 g","Malha respirável","Sola antiderrapante"],fr:["Poids : 260 g","Maille respirante","Semelle antidérapante"]}},
+ {id:2,name:"Urbano Blanco",cat:"casual",type:"sneaker",price:259000,old:299000,c:["#f2f2f2","#222b3d","#e8e8e8"],comfort:4,tag:"sale",
+  d:{es:"El tenis blanco de siempre, en cuero suave que se adapta a tu pie.",en:"The classic white sneaker in soft leather that adapts to your foot.",pt:"O clássico tênis branco em couro macio que se adapta ao seu pé.",fr:"La basket blanche classique en cuir souple qui s'adapte à votre pied."},
+  f:{es:["Cuero genuino","Forro acolchado","Combina con todo"],en:["Genuine leather","Padded lining","Goes with everything"],pt:["Couro legítimo","Forro acolchoado","Combina com tudo"],fr:["Cuir véritable","Doublure rembourrée","Se marie avec tout"]}},
+ {id:3,name:"Gerente Oxford",cat:"formal",type:"oxford",price:379000,c:["#3b2216","#1b0f08","#2a1a10"],comfort:4,
+  d:{es:"Oxford clásico en cuero pulido, para reuniones, bodas y días importantes.",en:"Classic polished-leather oxford for meetings, weddings and important days.",pt:"Oxford clássico em couro polido, para reuniões, casamentos e dias importantes.",fr:"Oxford classique en cuir poli pour réunions, mariages et grands jours."},
+  f:{es:["Cuero de res pulido","Suela de cuero cosida","Plantilla con memoria"],en:["Polished cowhide","Stitched leather sole","Memory insole"],pt:["Couro bovino polido","Sola de couro costurada","Palmilha com memória"],fr:["Cuir de bœuf poli","Semelle cuir cousue","Semelle à mémoire"]}},
+ {id:4,name:"Profesor Negro",cat:"formal",type:"oxford",price:349000,c:["#16181d","#05060a","#262a33"],comfort:5,tag:"new",
+  d:{es:"Nuestro formal más cómodo: elegante por fuera, tan suave por dentro como un tenis.",en:"Our most comfortable dress shoe: elegant outside, as soft as a sneaker inside.",pt:"Nosso sapato social mais confortável: elegante por fora, macio como um tênis por dentro.",fr:"Notre chaussure habillée la plus confortable : élégante dehors, douce comme une basket dedans."},
+  f:{es:["Plantilla ergonómica","Cuero flexible","Ideal para 8+ horas de pie"],en:["Ergonomic insole","Flexible leather","Great for 8+ hours on your feet"],pt:["Palmilha ergonômica","Couro flexível","Ideal para 8+ horas em pé"],fr:["Semelle ergonomique","Cuir souple","Idéal pour 8 h+ debout"]}},
+ {id:5,name:"Mocasín Costa",cat:"casual",type:"loafer",price:269000,c:["#a8693a","#6b3e1c","#3a2210"],comfort:5,
+  d:{es:"Mocasín sin cordones, liviano y fresco. Se pone y se quita en segundos.",en:"Laceless loafer, light and breezy. On and off in seconds.",pt:"Mocassim sem cadarço, leve e fresco. Calça e tira em segundos.",fr:"Mocassin sans lacets, léger et aéré. Se met et s'enlève en un instant."},
+  f:{es:["Sin cordones","Cuero suave","Suela flexible"],en:["Slip-on","Soft leather","Flexible sole"],pt:["Sem cadarço","Couro macio","Sola flexível"],fr:["Sans lacets","Cuir souple","Semelle flexible"]}},
+ {id:6,name:"Mocasín Azul Noche",cat:"casual",type:"loafer",price:279000,old:319000,c:["#1c2f5c","#101c3a","#2b1d12"],comfort:4,tag:"sale",
+  d:{es:"Un mocasín con carácter: perfecto para oficina casual o salidas de fin de semana.",en:"A loafer with character: perfect for casual office days or weekend outings.",pt:"Um mocassim com personalidade: perfeito para o escritório casual ou fim de semana.",fr:"Un mocassin de caractère : parfait pour le bureau décontracté ou le week-end."},
+  f:{es:["Gamuza premium","Costura reforzada","Forro transpirable"],en:["Premium suede","Reinforced stitching","Breathable lining"],pt:["Camurça premium","Costura reforçada","Forro respirável"],fr:["Daim premium","Coutures renforcées","Doublure respirante"]}},
+ {id:7,name:"Montaña Pro",cat:"boots",type:"boot",price:429000,c:["#7a5230","#3d2a18","#1d1d1d"],comfort:5,
+  d:{es:"Bota resistente al agua, con soporte de tobillo para ciudad o sendero.",en:"Water-resistant boot with ankle support for city or trail.",pt:"Bota resistente à água com suporte de tornozelo para cidade ou trilha.",fr:"Botte résistante à l'eau avec maintien de la cheville, pour la ville ou le sentier."},
+  f:{es:["Resistente al agua","Suela de agarre profundo","Soporte de tobillo"],en:["Water-resistant","Deep-grip outsole","Ankle support"],pt:["Resistente à água","Sola de aderência profunda","Suporte de tornozelo"],fr:["Résistante à l'eau","Semelle à forte adhérence","Maintien cheville"]}},
+ {id:8,name:"Chelsea Ébano",cat:"boots",type:"boot",price:399000,c:["#14110f","#080605","#2a2420"],comfort:4,tag:"new",
+  d:{es:"Bota de cuero negro, elegante y fácil de combinar. Un básico que dura años.",en:"Black leather boot, elegant and easy to style. A staple that lasts for years.",pt:"Bota de couro preto, elegante e fácil de combinar. Um básico que dura anos.",fr:"Botte en cuir noir, élégante et facile à associer. Un indispensable qui dure."},
+  f:{es:["Cuero plena flor","Elásticos laterales","Suela resistente"],en:["Full-grain leather","Side elastics","Durable outsole"],pt:["Couro plena flor","Elásticos laterais","Sola resistente"],fr:["Cuir pleine fleur","Élastiques latéraux","Semelle résistante"]}},
+ {id:9,name:"Brisa Sandalia",cat:"sandals",type:"sandal",price:179000,c:["#c97b45","#2f2118","#e8d4b8"],comfort:5,
+  d:{es:"Sandalia con plantilla anatómica, ideal para clima cálido y paseos largos.",en:"Sandal with an anatomical footbed, ideal for warm weather and long walks.",pt:"Sandália com palmilha anatômica, ideal para clima quente e longas caminhadas.",fr:"Sandale à semelle anatomique, idéale par temps chaud et pour les longues balades."},
+  f:{es:["Plantilla anatómica","Correas ajustables","Muy liviana"],en:["Anatomical footbed","Adjustable straps","Very light"],pt:["Palmilha anatômica","Tiras ajustáveis","Muito leve"],fr:["Semelle anatomique","Brides réglables","Très légère"]}},
+ {id:10,name:"Playa Cuero",cat:"sandals",type:"sandal",price:159000,old:189000,c:["#3b3b3b","#111","#8a8a8a"],comfort:4,tag:"sale",
+  d:{es:"Sandalia de cuero con suela de goma: fresca, durable y lista para el verano.",en:"Leather sandal with a rubber sole: cool, durable and summer-ready.",pt:"Sandália de couro com sola de borracha: fresca, durável e pronta para o verão.",fr:"Sandale en cuir à semelle caoutchouc : fraîche, durable et prête pour l'été."},
+  f:{es:["Cuero + goma","Secado rápido","Antideslizante"],en:["Leather + rubber","Quick-dry","Non-slip"],pt:["Couro + borracha","Secagem rápida","Antiderrapante"],fr:["Cuir + caoutchouc","Séchage rapide","Antidérapante"]}},
+ {id:11,name:"Sprint Flex",cat:"sport",type:"sneaker",price:319000,c:["#0f7a6a","#1a1a1a","#f2f2f2"],comfort:5,
+  d:{es:"Para entrenar con confianza: retorno de energía y agarre en cada zancada.",en:"Train with confidence: energy return and grip in every stride.",pt:"Para treinar com confiança: retorno de energia e aderência a cada passada.",fr:"Pour s'entraîner en confiance : retour d'énergie et adhérence à chaque foulée."},
+  f:{es:["Retorno de energía","Talón estabilizador","Reflectivo nocturno"],en:["Energy return","Heel stabilizer","Night reflective"],pt:["Retorno de energia","Calcanhar estabilizador","Refletivo noturno"],fr:["Retour d'énergie","Talon stabilisateur","Réfléchissant"]}},
+ {id:12,name:"Derby Café",cat:"formal",type:"oxford",price:359000,old:399000,c:["#8a4b2a","#4a2411","#2a1a10"],comfort:4,tag:"sale",
+  d:{es:"Derby de cordones abiertos: más holgado y cómodo que un oxford, igual de elegante.",en:"Open-lace derby: roomier and more comfortable than an oxford, just as elegant.",pt:"Derby de cadarço aberto: mais folgado e confortável que um oxford, igualmente elegante.",fr:"Derby à lacets ouverts : plus ample et confortable qu'un oxford, tout aussi élégant."},
+  f:{es:["Horma amplia","Cuero teñido a mano","Suela Goodyear"],en:["Roomy last","Hand-dyed leather","Goodyear welt sole"],pt:["Forma ampla","Couro tingido à mão","Sola Goodyear"],fr:["Forme large","Cuir teinté main","Semelle Goodyear"]}}
+];
+
+/* ---------- Ilustraciones SVG ---------- */
+function shoe(type,[main,accent,sole],uid){
+  const o='stroke="rgba(0,0,0,.25)" stroke-width="1.5" stroke-linejoin="round"';
+  const sh=`<ellipse cx="155" cy="152" rx="125" ry="6" fill="rgba(0,0,0,.14)"/>`;
+  const g=`<linearGradient id="g${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient>`;
+  let b="";
+  if(type==="sneaker"){
+    b=`<path d="M18 112 L288 112 L288 124 Q288 142 268 142 L40 142 Q18 142 18 124Z" fill="${sole}" ${o}/>
+    <path d="M22 112 L22 72 Q22 56 40 54 L72 52 Q98 54 112 38 L136 30 Q150 40 166 58 Q205 72 252 82 Q287 90 288 112Z" fill="${main}" ${o}/>
+    <path d="M22 112 L22 72 Q22 56 40 54 L72 52 Q98 54 112 38 L136 30 Q150 40 166 58 Q205 72 252 82 Q287 90 288 112Z" fill="url(#g${uid})"/>
+    <path d="M60 106 Q120 70 200 92 Q250 100 284 106 L288 112 L22 112Z" fill="${accent}" opacity=".9"/>
+    <g stroke="${accent==="#222b3d"?"#222b3d":"#fff"}" stroke-width="3" stroke-linecap="round" opacity=".85"><path d="M124 44l24 14M134 38l24 14M146 54l-20-8M156 62l-22-10"/></g>
+    <path d="M40 76 Q44 66 60 66" stroke="rgba(0,0,0,.2)" fill="none" stroke-width="2"/>`;
+  } else if(type==="oxford"){
+    b=`<path d="M16 126 L292 126 L292 138 Q292 148 276 148 L38 148 Q16 148 16 136Z" fill="${accent}" ${o}/>
+    <rect x="30" y="138" width="60" height="10" rx="3" fill="rgba(0,0,0,.35)"/>
+    <path d="M20 126 L20 98 Q22 84 42 82 Q70 80 94 70 Q122 58 142 56 Q178 62 216 88 Q264 96 288 112 Q296 120 292 126Z" fill="${main}" ${o}/>
+    <path d="M20 126 L20 98 Q22 84 42 82 Q70 80 94 70 Q122 58 142 56 Q178 62 216 88 Q264 96 288 112 Q296 120 292 126Z" fill="url(#g${uid})"/>
+    <path d="M200 84 Q214 100 212 126" stroke="rgba(0,0,0,.3)" fill="none" stroke-width="2"/>
+    <g stroke="rgba(255,255,255,.55)" stroke-width="2.5" stroke-linecap="round"><path d="M112 66l22 14M124 62l22 14M138 60l20 14M150 62l16 14"/></g>
+    <path d="M252 98 Q272 104 286 114" stroke="rgba(255,255,255,.25)" fill="none" stroke-width="2"/>`;
+  } else if(type==="loafer"){
+    b=`<path d="M16 126 L292 126 L292 138 Q292 148 276 148 L38 148 Q16 148 16 136Z" fill="${accent}" ${o}/>
+    <rect x="30" y="138" width="60" height="10" rx="3" fill="rgba(0,0,0,.35)"/>
+    <path d="M20 126 L20 100 Q22 86 40 84 Q80 82 104 66 Q134 50 168 70 Q214 96 262 100 Q292 106 292 126Z" fill="${main}" ${o}/>
+    <path d="M20 126 L20 100 Q22 86 40 84 Q80 82 104 66 Q134 50 168 70 Q214 96 262 100 Q292 106 292 126Z" fill="url(#g${uid})"/>
+    <path d="M128 60 Q176 84 218 98 L222 112 Q172 98 124 74Z" fill="${sole}" ${o}/>
+    <circle cx="170" cy="86" r="4" fill="#d9b25f"/>`;
+  } else if(type==="boot"){
+    b=`<path d="M52 132 L292 132 L292 144 Q292 152 276 152 L62 152 Q50 152 52 140Z" fill="${accent}" ${o}/>
+    <rect x="58" y="142" width="48" height="10" rx="3" fill="rgba(0,0,0,.35)"/>
+    <path d="M60 132 L60 38 Q60 20 80 18 L136 18 Q146 20 146 34 L148 80 Q200 90 246 104 Q290 114 292 132Z" fill="${main}" ${o}/>
+    <path d="M60 132 L60 38 Q60 20 80 18 L136 18 Q146 20 146 34 L148 80 Q200 90 246 104 Q290 114 292 132Z" fill="url(#g${uid})"/>
+    <rect x="60" y="14" width="86" height="12" rx="5" fill="rgba(0,0,0,.25)"/>
+    <g stroke="rgba(255,255,255,.6)" stroke-width="2.5" stroke-linecap="round"><path d="M118 44l24 6M118 58l26 6M120 72l26 6M130 86l24 8"/></g>
+    <path d="M60 110 L148 110" stroke="rgba(0,0,0,.25)" stroke-width="2"/>`;
+  } else {
+    b=`<path d="M22 124 Q22 112 40 110 L252 100 Q292 98 292 116 Q292 132 268 133 L44 142 Q22 142 22 128Z" fill="${accent}" ${o}/>
+    <path d="M30 118 Q30 112 42 110 L250 101 Q282 100 284 114 L30 126Z" fill="${sole}" ${o}/>
+    <path d="M108 108 Q132 52 176 102" fill="none" stroke="${main}" stroke-width="16" stroke-linecap="round"/>
+    <path d="M196 102 Q216 62 248 100" fill="none" stroke="${main}" stroke-width="14" stroke-linecap="round"/>
+    <path d="M58 112 Q56 74 80 76" fill="none" stroke="${main}" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="142" cy="72" r="4" fill="#d9b25f"/>`;
+  }
+  return `<svg viewBox="0 0 310 160" role="img" aria-hidden="true"><defs>${g}</defs>${sh}${b}</svg>`;
+}
+
+/* ---------- Estado ---------- */
+const $=s=>document.querySelector(s);
+const state={lang:"es",theme:"light",cat:"all",q:"",sort:"feat",favs:[],current:null,size:null};
+const store={
+  get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+const fmt=n=>new Intl.NumberFormat({es:"es-CO",en:"en-US",pt:"pt-BR",fr:"fr-FR"}[state.lang],{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n);
+const t=k=>T[state.lang][k];
+
+/* ---------- Render ---------- */
+function applyStatic(){
+  document.documentElement.lang=state.lang;
+  document.querySelectorAll("[data-i18n]").forEach(e=>e.textContent=t(e.dataset.i18n));
+  document.querySelectorAll("[data-i18n-ph]").forEach(e=>e.placeholder=t(e.dataset.i18nPh));
+  document.querySelectorAll("[data-i18n-aria]").forEach(e=>e.setAttribute("aria-label",t(e.dataset.i18nAria)));
+  $("#waGeneral").href=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t("waGen"))}`;
+  $("#sizeGuide").href=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t("waSize"))}`;
+  $("#sizeGuide").target="_blank";$("#sizeGuide").rel="noopener";
+  document.title="El Profe Store · "+t("eyebrow");
+}
+function renderChips(){
+  const cats=["all","sport","formal","casual","boots","sandals","favs"];
+  $("#chips").innerHTML="";
+  cats.forEach(c=>{
+    const b=document.createElement("button");
+    b.className="chip";b.textContent=t(c);
+    b.setAttribute("aria-pressed",state.cat===c);
+    b.onclick=()=>{state.cat=c;renderChips();renderGrid()};
+    $("#chips").appendChild(b);
+  });
+}
+function list(){
+  let l=P.filter(p=>state.cat==="all"||(state.cat==="favs"?state.favs.includes(p.id):p.cat===state.cat));
+  const q=state.q.trim().toLowerCase();
+  if(q)l=l.filter(p=>(p.name+" "+p.d[state.lang]+" "+t(p.cat)).toLowerCase().includes(q));
+  if(state.sort==="asc")l=[...l].sort((a,b)=>a.price-b.price);
+  if(state.sort==="desc")l=[...l].sort((a,b)=>b.price-a.price);
+  return l;
+}
+function dots(n){return `<span class="dots" aria-label="${n}/5">${[1,2,3,4,5].map(i=>`<i class="${i<=n?"on":""}"></i>`).join("")}</span>`}
+function renderGrid(){
+  const l=list(),g=$("#grid");
+  $("#count").textContent=t("results")(l.length);
+  g.innerHTML="";
+  if(!l.length){g.innerHTML=`<p class="empty" style="grid-column:1/-1"></p>`;g.firstChild.textContent=t("none");return}
+  l.forEach(p=>{
+    const c=document.createElement("article");c.className="card reveal";
+    const fav=state.favs.includes(p.id);
+    c.innerHTML=`
+      <div style="position:relative">
+        <button class="card-img" aria-label=""></button>
+        ${p.tag?`<span class="tag">${t(p.tag==="new"?"newTag":"saleTag")}</span>`:""}
+        <button class="fav" aria-pressed="${fav}"><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.7-8 11-8 11z"/></svg></button>
+      </div>
+      <div class="card-body">
+        <span class="cat"></span><h3></h3>
+        <div class="comfort"><span></span>${dots(p.comfort)}</div>
+        <div class="price"></div>
+        <button class="btn btn-primary"></button>
+      </div>`;
+    const img=c.querySelector(".card-img");
+    img.innerHTML=shoe(p.type,p.c,"c"+p.id);
+    img.setAttribute("aria-label",p.name);
+    c.querySelector(".cat").textContent=t(p.cat);
+    c.querySelector("h3").textContent=p.name;
+    c.querySelector(".comfort span").textContent=t("comfort")+" ";
+    c.querySelector(".price").innerHTML=fmt(p.price)+(p.old?`<span class="old">${fmt(p.old)}</span>`:"");
+    const open=()=>openModal(p);
+    img.onclick=open;c.querySelector(".btn").textContent=t("view");c.querySelector(".btn").onclick=open;
+    const fb=c.querySelector(".fav");
+    fb.setAttribute("aria-label","♥ "+p.name);
+    fb.onclick=()=>{
+      state.favs=state.favs.includes(p.id)?state.favs.filter(x=>x!==p.id):[...state.favs,p.id];
+      store.set("favs",state.favs);
+      state.cat==="favs"?renderGrid():fb.setAttribute("aria-pressed",state.favs.includes(p.id));
+    };
+    g.appendChild(c);
+  });
+}
+
+/* ---------- Modal ---------- */
+function openModal(p){
+  state.current=p;state.size=null;
+  $("#mImg").innerHTML=shoe(p.type,p.c,"m"+p.id);
+  fillModal();
+  $("#overlay").classList.add("open");
+  document.body.style.overflow="hidden";
+  $("#closeBtn").focus();
+}
+function fillModal(){
+  const p=state.current;if(!p)return;
+  $("#mCat").textContent=t(p.cat);
+  $("#mName").textContent=p.name;
+  $("#mPrice").innerHTML=fmt(p.price)+(p.old?`<span class="old">${fmt(p.old)}</span>`:"");
+  $("#mDesc").textContent=p.d[state.lang];
+  $("#mFeat").innerHTML="";
+  p.f[state.lang].forEach(x=>{const li=document.createElement("li");li.textContent=x;$("#mFeat").appendChild(li)});
+  $("#sizes").innerHTML="";
+  for(let s=35;s<=45;s++){
+    const b=document.createElement("button");b.className="size";b.textContent=s;
+    b.setAttribute("aria-pressed",state.size===s);
+    b.onclick=()=>{state.size=s;$("#warn").textContent="";[...$("#sizes").children].forEach(x=>x.setAttribute("aria-pressed",x===b))};
+    $("#sizes").appendChild(b);
+  }
+  $("#warn").textContent="";
+}
+function closeModal(){$("#overlay").classList.remove("open");document.body.style.overflow="";state.current=null}
+$("#closeBtn").onclick=closeModal;
+$("#overlay").addEventListener("click",e=>{if(e.target.id==="overlay")closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+$("#mWa").addEventListener("click",e=>{
+  const p=state.current;
+  if(!state.size){e.preventDefault();$("#warn").textContent=t("needSize");return}
+  $("#mWa").href=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t("waMsg")(p.name,state.size,fmt(p.price)))}`;
+});
+
+/* ---------- Controles ---------- */
+function setTheme(th){
+  state.theme=th;document.documentElement.dataset.theme=th;store.set("theme",th);
+}
+$("#themeBtn").onclick=()=>setTheme(state.theme==="dark"?"light":"dark");
+$("#langSel").onchange=e=>{state.lang=e.target.value;store.set("lang",state.lang);renderAll()};
+$("#q").oninput=e=>{state.q=e.target.value;renderGrid()};
+$("#sort").onchange=e=>{state.sort=e.target.value;renderGrid()};
+
+function renderAll(){
+  applyStatic();renderChips();renderGrid();fillModal();
+  $("#heroShoe").innerHTML=shoe("sneaker",["#1f3a6e","#f08a24","#f4f4f4"],"hero");
+  $("#langSel").value=state.lang;
+}
+
+/* ---------- Init ---------- */
+(function init(){
+  const savedTheme=store.get("theme",null);
+  setTheme(savedTheme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+  const savedLang=store.get("lang",null);
+  const nav=(navigator.language||"es").slice(0,2);
+  state.lang=savedLang||(T[nav]?nav:"es");
+  state.favs=store.get("favs",[]);
+  renderAll();
+})();
+</script>
+</body>
+</html>
